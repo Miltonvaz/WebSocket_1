@@ -1,4 +1,3 @@
-// websocket/ws_handler.go
 package websocket
 
 import (
@@ -23,6 +22,7 @@ func WSHandler(w http.ResponseWriter, r *http.Request) {
 
 	userIDStr := r.URL.Query().Get("user_id")
 	sessionIDStr := r.URL.Query().Get("session_id")
+	codeStr := r.URL.Query().Get("code")
 
 	userID, err := strconv.Atoi(userIDStr)
 	if err != nil {
@@ -38,7 +38,14 @@ func WSHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	application.Manager.AddClient(userID, sessionID, conn)
+	code, err := strconv.Atoi(codeStr)
+	if err != nil {
+		log.Println("code inválido")
+		conn.Close()
+		return
+	}
+
+	application.Manager.AddClient(userID, sessionID, conn, code)
 	defer application.Manager.RemoveClient(userID, sessionID)
 
 	for {

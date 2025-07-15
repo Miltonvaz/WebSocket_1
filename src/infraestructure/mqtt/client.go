@@ -23,10 +23,10 @@ var messageHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Messa
 	log.Printf("Mensaje recibido en [%s]: %s\n", msg.Topic(), payloadStr)
 
 	userID := payload.IdUser
-	sessionID := payload.IdUser
+	code := payload.Code
 
-	if sessionID == 0 {
-		log.Printf("No sessionID recibido para userID %d, no se enviará mensaje WS\n", userID)
+	if code == 0 {
+		log.Printf("No code recibido para userID %d, no se enviará mensaje WS\n", userID)
 		return
 	}
 
@@ -36,7 +36,7 @@ var messageHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Messa
 			"alcohol_concentration": payload.Alcohol,
 		}
 		sendToAPI("http://3.226.201.85:8080/api/sensor-alcohol/create", data)
-		sendToUser(userID, sessionID, data)
+		sendToUser(userID, code, data)
 	}
 
 	if payload.Temperatura != 0 {
@@ -45,7 +45,7 @@ var messageHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Messa
 			"temperature": payload.Temperatura,
 		}
 		sendToAPI("http://3.226.201.85:8080/api/sensor-temperatura/create", data)
-		sendToUser(userID, sessionID, data)
+		sendToUser(userID, code, data)
 	}
 
 	if payload.Conductividad != 0 {
@@ -54,7 +54,7 @@ var messageHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Messa
 			"conductivity": payload.Conductividad,
 		}
 		sendToAPI("http://3.226.201.85:8080/api/sensor-conductividad/create", data)
-		sendToUser(userID, sessionID, data)
+		sendToUser(userID, code, data)
 	}
 
 	if payload.Turbuidez != 0 {
@@ -63,7 +63,7 @@ var messageHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Messa
 			"turbidity": payload.Turbuidez,
 		}
 		sendToAPI("http://3.226.201.85:8080/api/sensor-turbuidez/create", data)
-		sendToUser(userID, sessionID, data)
+		sendToUser(userID, code, data)
 	}
 
 	if payload.PH != 0 {
@@ -72,7 +72,7 @@ var messageHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Messa
 			"ph_value": payload.PH,
 		}
 		sendToAPI("http://3.226.201.85:8080/api/sensor-ph/create", data)
-		sendToUser(userID, sessionID, data)
+		sendToUser(userID, code, data)
 	}
 
 	if payload.Densidad != 0 {
@@ -81,7 +81,7 @@ var messageHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Messa
 			"density": payload.Densidad,
 		}
 		sendToAPI("http://3.226.201.85:8080/api/sensor-densidad/create", data)
-		sendToUser(userID, sessionID, data)
+		sendToUser(userID, code, data)
 	}
 }
 
@@ -102,13 +102,13 @@ func sendToAPI(apiURL string, data map[string]interface{}) {
 	log.Printf("Respuesta de la API [%s]: %s\n", apiURL, resp.Status)
 }
 
-func sendToUser(userID int, sessionID int, data map[string]interface{}) {
+func sendToUser(userID int, code int, data map[string]interface{}) {
 	msgJSON, err := json.Marshal(data)
 	if err != nil {
 		log.Printf("Error serializando dato para enviar WS: %v\n", err)
 		return
 	}
-	application.Manager.SendTo(userID, sessionID, msgJSON)
+	application.Manager.SendTo(userID, code, msgJSON)
 }
 
 func StartMQTTClient() {
