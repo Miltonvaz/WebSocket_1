@@ -83,6 +83,14 @@ var messageHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Messa
 		sendToAPI("http://3.226.201.85:8080/api/sensor-densidad/create", data)
 		sendToUser(userID, code, data)
 	}
+	if payload.Rpm != 0 {
+		data := map[string]interface{}{
+			"user_id": userID,
+			"rpm":     payload.Rpm,
+		}
+		sendToAPI("http://3.226.201.85:8080//api/motor/create", data)
+		sendToUser(userID, code, data)
+	}
 }
 
 func sendToAPI(apiURL string, data map[string]interface{}) {
