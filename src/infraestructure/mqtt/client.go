@@ -35,7 +35,7 @@ var messageHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Messa
 			"user_id":               userID,
 			"alcohol_concentration": payload.Alcohol,
 		}
-		sendToAPI("http://3.226.201.85:8080/api/sensor-alcohol/create", data)
+		sendToAPI("https://fermest-api.it2id.cc/api/sensor-alcohol/create", data)
 		sendToUser(userID, code, data)
 	}
 
@@ -44,7 +44,7 @@ var messageHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Messa
 			"user_id":     userID,
 			"temperature": payload.Temperatura,
 		}
-		sendToAPI("http://3.226.201.85:8080/api/sensor-temperatura/create", data)
+		sendToAPI("https://fermest-api.it2id.cc/api/sensor-temperatura/create", data)
 		sendToUser(userID, code, data)
 	}
 
@@ -53,7 +53,7 @@ var messageHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Messa
 			"user_id":      userID,
 			"conductivity": payload.Conductividad,
 		}
-		sendToAPI("http://3.226.201.85:8080/api/sensor-conductividad/create", data)
+		sendToAPI("https://fermest-api.it2id.cc/api/sensor-conductividad/create", data)
 		sendToUser(userID, code, data)
 	}
 
@@ -62,7 +62,7 @@ var messageHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Messa
 			"user_id":   userID,
 			"turbidity": payload.Turbuidez,
 		}
-		sendToAPI("http://3.226.201.85:8080/api/sensor-turbuidez/create", data)
+		sendToAPI("https://fermest-api.it2id.cc/api/sensor-turbuidez/create", data)
 		sendToUser(userID, code, data)
 	}
 
@@ -71,7 +71,7 @@ var messageHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Messa
 			"user_id":  userID,
 			"ph_value": payload.PH,
 		}
-		sendToAPI("http://3.226.201.85:8080/api/sensor-ph/create", data)
+		sendToAPI("https://fermest-api.it2id.cc/api/sensor-ph/create", data)
 		sendToUser(userID, code, data)
 	}
 
@@ -80,7 +80,7 @@ var messageHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Messa
 			"user_id": userID,
 			"density": payload.Densidad,
 		}
-		sendToAPI("http://3.226.201.85:8080/api/sensor-densidad/create", data)
+		sendToAPI("https://fermest-api.it2id.cc/api/sensor-densidad/create", data)
 		sendToUser(userID, code, data)
 	}
 	if payload.Rpm != 0 {
@@ -88,7 +88,7 @@ var messageHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Messa
 			"user_id": userID,
 			"rpm":     payload.Rpm,
 		}
-		sendToAPI("http://3.226.201.85:8080//api/motor/create", data)
+		sendToAPI("https://fermest-api.it2id.cc/api/motor/create", data)
 		sendToUser(userID, code, data)
 	}
 }
